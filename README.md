@@ -1,2 +1,2 @@
 # iterative_methods
-Implementation of Gauss-Seidal and Jacobi iterative methods in Julia
+Implementation of the Gauss-Seidal and Jacobi iterative methods in Julia

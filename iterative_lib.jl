@@ -145,7 +145,9 @@ function CG(A, b, x)
     p = r;
     r_old = r'*r;
 
-    for i = 1:N
+    i = 0
+
+    while i < MAX_ITER
 
         Ap = A*p
         alpha = r_old/(p'*Ap)
@@ -159,6 +161,8 @@ function CG(A, b, x)
 
         p = r+(r_new/r_old)*p
         r_old = r_new
+
+        i += 1
 
     end
 

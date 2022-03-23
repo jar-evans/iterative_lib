@@ -1,2 +1,13 @@
 # iterative_methods
-Implementation of the Gauss-Seidal, SOR, Jacobi and weighted Jacobi iterative methods in Julia
+
+## Overview
+Julia implementation of a bunch of iterative methods for solving linear systems
+
+### Jacobi
+  
+### Gauss-Seidal
+   
+### Weighted Jacobi
+  
+### Successive Over Relaxation (SOR)
+    

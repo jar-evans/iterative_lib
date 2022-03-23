@@ -136,3 +136,32 @@ function SOR(A, b, x, w)
     x
 
 end
+
+function CG(A, b, x)
+
+    N = size(A, 1)
+
+    r = b-A*x;
+    p = r;
+    r_old = r'*r;
+
+    for i = 1:N
+
+        Ap = A*p
+        alpha = r_old/(p'*Ap)
+
+        x = x+alpha*p
+        r = r-alpha*Ap
+
+        r_new = r'*r
+
+        r_new^0.5 < 1e-10 && break
+
+        p = r+(r_new/r_old)*p
+        r_old = r_new
+
+    end
+
+    x
+
+end

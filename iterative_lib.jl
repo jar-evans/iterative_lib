@@ -5,8 +5,8 @@ const MAX_ITER = 100
 
 function norm(x)
     norm = 0
-    for i in eachindex(x)
-        @inbounds norm += x[i]^2
+    @inbounds for i in eachindex(x)
+        norm += x[i]^2
     end
     norm ^0.5
 end
@@ -20,7 +20,7 @@ function jacobi(A, b, x)
 
         x_new = zeros(N)        
     
-        for j in 1:N
+        @inbounds @views for j in 1:N
 
             L = A[j, 1:j-1]'*x[1:j-1]
             U = A[j, j+1:N]'*x[j+1:N]
@@ -51,7 +51,7 @@ function gauss_seidal(A, b, x)
 
         x_new = zeros(N)        
     
-        for j in 1:N
+        @inbounds @views for j in 1:N
 
             L = A[j, 1:j-1]'*x_new[1:j-1]
             U = A[j, j+1:N]'*x[j+1:N]
@@ -82,7 +82,7 @@ function weighted_jacobi(A, b, x, w)
 
         x_new = zeros(N)        
     
-        for j in 1:N
+        @inbounds @views for j in 1:N
 
             L = A[j, 1:j-1]'*x[1:j-1]
             U = A[j, j+1:N]'*x[j+1:N]
@@ -114,7 +114,7 @@ function SOR(A, b, x, w)
 
         x_new = zeros(N)
 
-        for j in 1:N
+        @inbounds @views for j in 1:N
 
             L = A[j, 1:j-1]'*x_new[1:j-1]
             U = A[j, j+1:N]'*x[j+1:N]
@@ -141,7 +141,7 @@ function CG(A, b, x)
 
     N = size(A, 1)
 
-    r = b-A*x;
+    r = b.-A.*x;
     p = r;
     r_old = r'*r;
 
@@ -150,10 +150,10 @@ function CG(A, b, x)
     while i < MAX_ITER
 
         Ap = A*p
-        alpha = r_old/(p'*Ap)
+        alpha = r_old./(p'.*Ap)
 
-        x = x+alpha*p
-        r = r-alpha*Ap
+        x = x.+alpha.*p
+        r = r.-alpha.*Ap
 
         r_new = r'*r
 

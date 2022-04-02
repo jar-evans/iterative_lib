@@ -17,17 +17,17 @@ function jacobi(A, b, x)
 
         @inbounds @views for j = 1:N
             if j == 1
-                L = 0
+                L = 0.0
                 U = A[j, j+1:N]' * x[j+1:N]
             elseif j == N
                 L = A[j, 1:j-1]' * x[1:j-1]
-                U = 0
+                U = 0.0
             else
                 L = A[j, 1:j-1]' * x[1:j-1]
                 U = A[j, j+1:N]' * x[j+1:N]
             end
 
-            x_new[j] = (b[j] - U - L) / A[j, j]
+            x_new[j] = (b[j] .- U .- L) / A[j, j]
 
             (j > 1) && x_new[j] == x_new[j-1] && break
 
@@ -36,12 +36,11 @@ function jacobi(A, b, x)
         e = x - x_new
         (e' * e)^0.5 < EPS && break
 
-        x = x_new
+        x .= x_new
         i += 1
 
     end
-
-    return x
+    x
 
 end
 
@@ -74,7 +73,7 @@ function gauss_seidal(A, b, x)
 
         norm(x - x_new) < EPS && break
 
-        x = x_new
+        x .= x_new
         i += 1
 
     end
@@ -114,7 +113,7 @@ function weighted_jacobi(A, b, x, w)
 
         norm(x - x_new) < EPS && break
 
-        x = x_new
+        x .= x_new
         i += 1
 
     end
@@ -154,7 +153,7 @@ function SOR(A, b, x, w)
 
         norm(x - x_new) < EPS && break
 
-        x = x_new
+        x .= x_new
         i += 1
 
     end

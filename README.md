@@ -11,3 +11,4 @@ Julia implementation of a bunch of iterative methods for solving linear systems
   
 ### Successive Over Relaxation (SOR)
     
+### Conjugate Gradient Descent

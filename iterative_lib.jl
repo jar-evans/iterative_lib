@@ -5,13 +5,12 @@ using BenchmarkTools
 const MAX_ITER = 100
 const EPS = 1e-10
 
-
-function jacobi(A, b, x)
+function jacobi!(x, A, b)
 
     N = length(b)
     i = 0
 
-    while i < MAX_ITER
+    for i in 1:MAX_ITER
 
         x_new = zeros(N)
 
@@ -37,14 +36,19 @@ function jacobi(A, b, x)
         (e' * e)^0.5 < EPS && break
 
         x .= x_new
-        i += 1
 
     end
+
+end
+
+function jacobi(x, A, b)
+
+    jacobi!(x, A, b)
     x
 
 end
 
-function gauss_seidal(A, b, x)
+function gauss_seidal!(x, A, b)
 
     N = length(b)
     i = 0
@@ -82,7 +86,12 @@ function gauss_seidal(A, b, x)
 
 end
 
-function weighted_jacobi(A, b, x, w)
+function gauss_seidal(x, A, b)
+    gauss_seidal!(x, A, b)
+    x
+end 
+
+function weighted_jacobi!(x, A, b, w)
 
     N = length(b)
     i = 0
@@ -122,7 +131,12 @@ function weighted_jacobi(A, b, x, w)
 
 end
 
-function SOR(A, b, x, w)
+function weighted_jacobi(x, A, b, w)
+    weighted_jacobi!(x, A, b, w)
+    x
+end
+
+function SOR!(x, A, b, w)
 
     N = length(b)
     i = 0
@@ -162,7 +176,12 @@ function SOR(A, b, x, w)
 
 end
 
-function CG(A, b, x)
+function SOR(x, A, b, w)
+    SOR!(x, A, b, w)
+    x
+end
+
+function CG!(x, A, b)
 
     N = length(b)
 
@@ -177,7 +196,7 @@ function CG(A, b, x)
         Ap = A * p
         alpha = r_old / (p' * Ap)
 
-        x = x + alpha * p
+        x .= x + alpha * p
         r = r - alpha * Ap
 
         r_new = r' * r
@@ -193,4 +212,9 @@ function CG(A, b, x)
 
     x
 
+end
+
+function CG(x, A, b)
+    CG!(x, A, b)
+    x
 end

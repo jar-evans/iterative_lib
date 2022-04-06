@@ -1,4 +1,4 @@
-# iterative_methods
+# iterative_lib
 
 ## Overview
 Julia implementation of a bunch of iterative methods for solving linear systems

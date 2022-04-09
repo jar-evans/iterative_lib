@@ -7,12 +7,21 @@ Julia implementation of a bunch of iterative methods for solving linear systems.
 
 ![memory_allocation](performance/memory_allocation.png?raw=true "Memory allocation")
 ## Problem statement
-Solve:
+Solve for ![equation](https://latex.codecogs.com/svg.image?\textbf{u}):
+
 ![equation](https://latex.codecogs.com/svg.image?A\textbf{u}&space;=&space;\textbf{f})
+
+At each iteration there exists the solution error (distance between current guess and exact solution):
 
 ![equation](https://latex.codecogs.com/svg.image?\inline&space;\textbf{e}^{k}=&space;\textbf{u}-\textbf{u}^{k})
 
+However, if this is known then the solution is known, which it isn't. So the residual is defined:
+
 ![equation](https://latex.codecogs.com/svg.image?\inline&space;\textbf{r}^{k}=&space;\textbf{f}-A\textbf{u}^{k})
+
+This is a measure of the aproximation of the current solution, and can then be used as a halting condition.
+
+## Solution
 
 Assuming that there exists a non-singular matrix ![equation](https://latex.codecogs.com/svg.image?\inline&space;M), a new matrix ![equation](https://latex.codecogs.com/svg.image?\inline&space;N) can be constructed:
 
@@ -43,13 +52,42 @@ As iteration requires ... iteration, we want to make each update of the guess as
 ### Jacobi
 ![equation](https://latex.codecogs.com/svg.image?\inline&space;M&space;=&space;D) (![equation](https://latex.codecogs.com/svg.image?\inline&space;N&space;=&space;E+F))
 
+ Which leads to:
+ 
+![equation](https://latex.codecogs.com/svg.image?\textbf{u}^{k&plus;1}&space;=&space;D^{-1}[(E&plus;F)\textbf{u}^k&space;&plus;&space;\textbf{f}])
+ 
+therefore producing the following update scheme:
+ 
+![equation](https://latex.codecogs.com/svg.image?u^{k&plus;1}_{i}&space;=&space;\frac{1}{a_{ii}}[f_i&space;-&space;\sum_{j=1,j\neq&space;i}^{n}a_{ij}u_j^k]&space;&space;\forall_i&space;=&space;1,&space;...,&space;n)
+
+As can be seen, the scheme is completely dependant on the previous iteration and independant of the other elements of the current iteration, making Jacobi natural to parallelise.
 ### Gauss-Seidal
 ![equation](https://latex.codecogs.com/svg.image?\inline&space;M&space;=&space;D-E) (![equation](https://latex.codecogs.com/svg.image?\inline&space;N&space;=&space;F))
+
+Which leads to:
+ 
+![equation](https://latex.codecogs.com/svg.image?\textbf{u}^{k&plus;1}&space;=&space;(D&space;-&space;E)^{-1}(F\textbf{u}^k&space;&plus;&space;\textbf{f}))
+ 
+therefore producing the following update scheme:
+
+![equation](https://latex.codecogs.com/svg.image?u^{k&plus;1}_{i}&space;=&space;\frac{1}{a_{ii}}[f_i&space;-&space;\sum_{j=1}^{i-1}a_{ij}u_j^{k&plus;1}-&space;\sum_{j=i&plus;1}^{n}a_{ij}u_j^{k}]&space;&space;&space;&space;&space;\forall_i&space;=&space;1,&space;...,&space;n)
+
+Unlike Jacobi, the scheme is dependant on the other elements of the current iteration, making Gauss-Seidal naturally serial, however ordering schemes such as red-black can be used to fix this.
 ### Damped Jacobi
 ![equation](https://latex.codecogs.com/svg.image?\inline&space;M&space;=&space;\frac{1}{\omega}D)
+
+For the damped case, the next guess becomes a weighted average of the current guess and the next guess as calculated by regular Jacobi:
+
+![equation](https://latex.codecogs.com/svg.image?\textbf{u}^{k&plus;1}&space;=&space;(1-\omega)\textbf{u}^k&space;&plus;&space;\omega\textbf{u}^{k&plus;1}_{jacobi})
 ### Successive Over Relaxation (SOR)
 ![equation](https://latex.codecogs.com/svg.image?\inline&space;M&space;=&space;\frac{1}{\omega}D-E)
+
+Similar to the damped Jacobi case, SOR is a weighted average:
+
+![equation](https://latex.codecogs.com/svg.image?\textbf{u}^{k&plus;1}&space;=&space;(1-\omega)\textbf{u}^k&space;&plus;&space;\omega\textbf{u}^{k&plus;1}_{GS})
 ### Conjugate Gradient Descent
+
+#TODO
 
 Sources:
 <ul>

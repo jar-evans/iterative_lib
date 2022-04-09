@@ -3,6 +3,9 @@
 ## Overview
 Julia implementation of a bunch of iterative methods for solving linear systems. BIMs (basic iterative methods) aren't the most efficient, but provide a basis for more advanced approaches (preconditioners/smoothers)
 
+![runtime](performance/runtime.png?raw=true "Runtime")
+
+![memory_allocation](performance/memory_allocation.png?raw=true "Memory allocation")
 ## Problem statement
 Solve:
 ![equation](https://latex.codecogs.com/svg.image?A\textbf{u}&space;=&space;\textbf{f})

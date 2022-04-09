@@ -41,22 +41,22 @@ This equation acts as a basis for a range of stationary iterative solution metho
 
 As iteration requires ... iteration, we want to make each update of the guess as cheap as possible, this is the case for diagonal or triangular matrices. With this in mind ![equation](https://latex.codecogs.com/svg.image?\inline&space;M) is commonly taken to be the diagonal or triangular components of ![equation](https://latex.codecogs.com/svg.image?\inline&space;A). 
 
-![equation](https://latex.codecogs.com/svg.image?\inline&space;A) is then interpreted as ![equation](https://latex.codecogs.com/svg.image?\inline&space;A&space;=&space;D&space;-&space;E&space;-&space;F&space;\in&space;\mathbb{R}^{n\times&space;n})
+![equation](https://latex.codecogs.com/svg.image?\inline&space;A) is then interpreted as ![equation](https://latex.codecogs.com/svg.image?\inline&space;A&space;=&space;D&space;-&space;L&space;-&space;U)
 
 ![equation](https://latex.codecogs.com/svg.image?\inline&space;\xrightarrow[]{}) ![equation](https://latex.codecogs.com/svg.image?\inline&space;D): diagonal of ![equation](https://latex.codecogs.com/svg.image?\inline&space;A)
 
-![equation](https://latex.codecogs.com/svg.image?\inline&space;\xrightarrow[]{}) ![equation](https://latex.codecogs.com/svg.image?\inline&space;-E): lower triangle of ![equation](https://latex.codecogs.com/svg.image?\inline&space;A)
+![equation](https://latex.codecogs.com/svg.image?\inline&space;\xrightarrow[]{}) ![equation](https://latex.codecogs.com/svg.image?\inline&space;-L): lower triangle of ![equation](https://latex.codecogs.com/svg.image?\inline&space;A)
 
-![equation](https://latex.codecogs.com/svg.image?\inline&space;\xrightarrow[]{}) ![equation](https://latex.codecogs.com/svg.image?\inline&space;-F): upper triangle of ![equation](https://latex.codecogs.com/svg.image?\inline&space;A)
+![equation](https://latex.codecogs.com/svg.image?\inline&space;\xrightarrow[]{}) ![equation](https://latex.codecogs.com/svg.image?\inline&space;-U): upper triangle of ![equation](https://latex.codecogs.com/svg.image?\inline&space;A)
 
 
 
 ### Jacobi
-![equation](https://latex.codecogs.com/svg.image?\inline&space;M&space;=&space;D) (![equation](https://latex.codecogs.com/svg.image?\inline&space;N&space;=&space;E+F))
+![equation](https://latex.codecogs.com/svg.image?\inline&space;M&space;=&space;D) (![equation](https://latex.codecogs.com/svg.image?\inline&space;N&space;=&space;L+U))
 
  Which leads to:
  
-![equation](https://latex.codecogs.com/svg.image?\textbf{u}^{k&plus;1}&space;=&space;D^{-1}[(E&plus;F)\textbf{u}^k&space;&plus;&space;\textbf{f}])
+![equation](https://latex.codecogs.com/svg.image?\textbf{u}^{k&plus;1}&space;=&space;D^{-1}[(L&plus;U)\textbf{u}^k&space;&plus;&space;\textbf{f}])
  
 therefore producing the following update scheme:
  
@@ -64,11 +64,11 @@ therefore producing the following update scheme:
 
 As can be seen, the scheme is completely dependant on the previous iteration and independant of the other elements of the current iteration, making Jacobi natural to parallelise.
 ### Gauss-Seidal
-![equation](https://latex.codecogs.com/svg.image?\inline&space;M&space;=&space;D-E) (![equation](https://latex.codecogs.com/svg.image?\inline&space;N&space;=&space;F))
+![equation](https://latex.codecogs.com/svg.image?\inline&space;M&space;=&space;D-L) (![equation](https://latex.codecogs.com/svg.image?\inline&space;N&space;=&space;U))
 
 Which leads to:
  
-![equation](https://latex.codecogs.com/svg.image?\textbf{u}^{k&plus;1}&space;=&space;(D&space;-&space;E)^{-1}(F\textbf{u}^k&space;&plus;&space;\textbf{f}))
+![equation](https://latex.codecogs.com/svg.image?\textbf{u}^{k&plus;1}&space;=&space;(D&space;-&space;L)^{-1}(U\textbf{u}^k&space;&plus;&space;\textbf{f}))
  
 therefore producing the following update scheme:
 
@@ -82,7 +82,7 @@ For the damped case, the next guess becomes a weighted average of the current gu
 
 ![equation](https://latex.codecogs.com/svg.image?\textbf{u}^{k&plus;1}&space;=&space;(1-\omega)\textbf{u}^k&space;&plus;&space;\omega\textbf{u}^{k&plus;1}_{jacobi})
 ### Successive Over Relaxation (SOR)
-![equation](https://latex.codecogs.com/svg.image?\inline&space;M&space;=&space;\frac{1}{\omega}D-E)
+![equation](https://latex.codecogs.com/svg.image?\inline&space;M&space;=&space;\frac{1}{\omega}D-L)
 
 Similar to the damped Jacobi case, SOR is a weighted average:
 

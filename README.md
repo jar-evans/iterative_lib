@@ -89,7 +89,7 @@ Similar to the damped Jacobi case, SOR is a weighted average:
 ![equation](https://latex.codecogs.com/svg.image?\textbf{u}^{k&plus;1}&space;=&space;(1-\omega)\textbf{u}^k&space;&plus;&space;\omega\textbf{u}^{k&plus;1}_{GS})
 ### Conjugate Gradient Descent
 
-#TODO
+#TODO (actually a method that makes use of Krylov subspaces, but I thought it still fits here)
 
 Sources:
 <ul>
